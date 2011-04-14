@@ -48,20 +48,27 @@ If this declaration is included, pppd will not load the module if its
 version number differs from that compiled into the plugin binary.
 
 Plugins can affect the behaviour of pppd in at least four ways:
+插件可以通过以下四种方式影响pppd的行为：
 
 1. They can add extra options which pppd will then recognize.  This is
    done by calling the add_options() procedure with a pointer to an
    array of option_t structures.  The last entry in the array must
    have its name field set to NULL.
+1. 可以添加额外的pppd选项。通过一个指向option_t结构体数组的指针作为参数调用
+   add_options()即可。数组最后一个实体的name字段要为NULL。
 
 2. Pppd contains `hook' variables which are procedure pointers.  If a
    given hook is not NULL, pppd will call the procedure it points to
    at the appropriate point in its processing.  The plugin can set any
    of these hooks to point to its own procedures.  See below for a
    description of the hooks which are currently implemented.
+2. pppd中包含‘hook’的变量实际为一些进程的指针。如果指针不为空（NULL），那么在pppd
+   程序的相应处会调用这些钩子进程。插件可以设置这些钩子为自己的函数。可以查看后面的说明。
 
 3. Plugin code can call any global procedures and access any global
    variables in pppd.
+3. 插件可以调用任何pppd中的全局函数，访问任意的全局变量。（pptp.c中的pptp_channel
+   就是通过这种方式改变了pppd中the_channel变量，进而改变了程序的行为）
 
 4. Plugins can register procedures to be called when particular events
    occur, using the `notifier' mechanism in pppd.  The differences
@@ -69,6 +76,9 @@ Plugins can affect the behaviour of pppd in at least four ways:
    function, whereas a notifier can call an arbitrary number, and that
    a hook usually returns some value to pppd, whereas a notifier
    function returns nothing.
+4. 使用pppd中的‘notifier’机制，插件可以注册自身的函数，以便在特定事件发生时被调用。
+   钩子hooks与notifiers的区别主要在于：一个hook只会调用一个函数，而一个notifier
+   可以调用任意数量的函数；并且hook通常返回一些值给pppd，而notifier不返回任何东西。
 
 Here is a list of the currently implemented hooks in pppd.
 

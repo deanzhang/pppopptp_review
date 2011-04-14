@@ -98,14 +98,14 @@ static int pptp_connect(void);
 //static void pptp_recv_config(int mru,u_int32_t asyncmap,int pcomp,int accomp);
 static void pptp_disconnect(void);
 
-struct channel pptp_channel = {
+struct channel pptp_channel = {//见pppd.h中的定义
     options: Options,
     //process_extra_options: &PPPOEDeviceOptions,
     check_options: NULL,
     connect: &pptp_connect,
     disconnect: &pptp_disconnect,
-    establish_ppp: &generic_establish_ppp,
-    disestablish_ppp: &generic_disestablish_ppp,
+    establish_ppp: &generic_establish_ppp,//此函数原型定义于pppd源代码中的sys-linux.c中，用于将一个文件描述符fd转换为ppp接口
+    disestablish_ppp: &generic_disestablish_ppp,//此函数原型定义于pppd源代码中的sys-linux.c中
     //send_config: &pptp_send_config,
     //recv_config: &pptp_recv_config,
     close: NULL,
@@ -316,19 +316,19 @@ static int get_call_id(int sock, pid_t gre, pid_t pppd,
     return 0;
 }
 
-void plugin_init(void)
+void plugin_init(void)//此为pppd运行时调用插件的初始化函数
 {
     /*if (!ppp_available() && !new_style_driver)
     {
 				fatal("Linux kernel does not support PPP -- are you running 2.4.x?");
     }*/
 
-    add_options(Options);
+    add_options(Options);//添加插件自定义选项
 
     info("PPTP plugin version %s compiled for pppd-%s",
 	 VERSION, pppd_version);
 
-    the_channel = &pptp_channel;
+    the_channel = &pptp_channel;//the_channel定义于pppd源程序，为struct channel结构体，参见pppd.h中的定义
     modem = 0;
 }
 
