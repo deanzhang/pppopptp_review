@@ -102,7 +102,7 @@ struct channel pptp_channel = {//见pppd.h中的定义
     options: Options,
     //process_extra_options: &PPPOEDeviceOptions,
     check_options: NULL,
-    connect: &pptp_connect,
+    connect: &pptp_connect,//此函数为pppopptp插件启动的核心，它启动了callmgr主管理程序，并建立一个pppox的socket返回给pppd程序
     disconnect: &pptp_disconnect,
     establish_ppp: &generic_establish_ppp,//此函数原型定义于pppd源代码中的sys-linux.c中，用于将一个文件描述符fd转换为ppp接口
     disestablish_ppp: &generic_disestablish_ppp,//此函数原型定义于pppd源代码中的sys-linux.c中
@@ -125,7 +125,7 @@ static int pptp_start_client(void)
 	struct sockaddr_pppox src_addr,dst_addr;
 	struct hostent *hostinfo;
 
-	hostinfo=gethostbyname(pptp_server);
+	hostinfo=gethostbyname(pptp_server);//域名解析
   if (!hostinfo)
 	{
 		fatal("PPTP: Unknown host %s\n", pptp_server);
@@ -145,7 +145,7 @@ static int pptp_start_client(void)
 			fatal("PPTP: connect failed (%s)\n",strerror(errno));
 			return -1;
 		}
-		getsockname(sock,(struct sockaddr*)&addr,&len);
+		getsockname(sock,(struct sockaddr*)&addr,&len);//取得本地的ip地址，用于建立后面的AF_PPPOX套接字
 		src_addr.sa_addr.pptp.sin_addr=addr.sin_addr;
 		close(sock);
 	}
@@ -176,7 +176,7 @@ static int pptp_start_client(void)
 		return -1;
 	}
 	len=sizeof(src_addr);
-	getsockname(pptp_fd,(struct sockaddr*)&src_addr,&len);
+	getsockname(pptp_fd,(struct sockaddr*)&src_addr,&len);//取得call_ID的值
 	call_ID=src_addr.sa_addr.pptp.call_id;
 
 	do {

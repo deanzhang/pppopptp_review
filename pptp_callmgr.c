@@ -315,13 +315,15 @@ cleanup:
     return 0;
 }
 
-/*** open_inetsock ************************************************************/
+/*** open_inetsock **
+* 处理TCP连接
+*********************************************************/
 int open_inetsock(struct in_addr inetaddr)
 {
     struct sockaddr_in dest, src;
     int s;
     dest.sin_family = AF_INET;
-    dest.sin_port   = htons(PPTP_PORT);
+    dest.sin_port   = htons(PPTP_PORT);//1723端口
     dest.sin_addr   = inetaddr;
     if ((s = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
         warn("socket: %s", strerror(errno));
@@ -343,7 +345,9 @@ int open_inetsock(struct in_addr inetaddr)
     return s;
 }
 
-/*** open_unixsock ************************************************************/
+/*** open_unixsock **
+* 用于建立unix域套接字
+*********************************************************/
 int open_unixsock(struct in_addr inetaddr)
 {
     struct sockaddr_un where;
