@@ -328,7 +328,7 @@ void plugin_init(void)//此为pppd运行时调用插件的初始化函数
     info("PPTP plugin version %s compiled for pppd-%s",
 	 VERSION, pppd_version);
 
-    the_channel = &pptp_channel;//the_channel定义于pppd源程序，为struct channel结构体，参见pppd.h中的定义
+    the_channel = &pptp_channel;//the_channel定义于pppd源程序，为struct channel结构体，参见pppd.h中的定义.
     modem = 0;
 }
 
