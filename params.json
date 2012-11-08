@@ -1,0 +1,1 @@
+{"name":"Pppopptp review","tagline":"pptp客户端程序注释","google":"","body":"# pppopptp review\r\n=================\r\n\r\n1. 该库为了理解lixnu下的accel-pptp的原理（主要是其与pppd之间的交互等），填写注释用。\r\n2. pptp.c用于运行callmgr管理进程，并建立一个pppox套接字返回给pppd;\r\n3. 其他文件主要都是处理callmgr的内容。\r\n","note":"Don't delete this file! It's used internally to help with page regeneration."}
